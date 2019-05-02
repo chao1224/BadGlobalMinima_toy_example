@@ -1,0 +1,14 @@
+name: motivation
+channels:
+  - auto
+  - conda-forge
+  - anaconda
+  - defaults
+dependencies:
+  - numpy=1.14
+  - pandas=0.23.4
+  - python=2.7.13
+  - scikit-learn=0.20
+  - scipy=0.19
+  - setuptools=40.6.3
+  - pytorch=0.4.*
