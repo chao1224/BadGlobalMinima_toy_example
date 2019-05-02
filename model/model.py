@@ -9,11 +9,11 @@ class NeuralNet(nn.Module):
     def __init__(self, D):
         super(NeuralNet, self).__init__()
         self.layers = nn.Sequential(
-            nn.Linear(D, 4),
+            nn.Linear(D, 100),
             nn.ReLU(),
-            nn.Linear(4, 4),
+            nn.Linear(100, 100),
             nn.ReLU(),
-            nn.Linear(4, 1),
+            nn.Linear(100, 1),
             nn.Sigmoid()
         )
 

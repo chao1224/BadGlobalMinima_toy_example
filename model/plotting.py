@@ -43,7 +43,7 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
     fig, ax = plt.subplots()
     x_lower, x_upper = -1.5, 1.5
     y_lower, y_upper = -1, 2
-    interval = 0.03
+    interval = 0.01
     x_axis = np.arange(x_lower, x_upper+interval/10, interval)
     y_axis = np.arange(y_lower, y_upper+interval/10, interval)[::-1]
     N = len(x_axis)
@@ -97,14 +97,18 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
                 labels.append('{:.1f}'.format(i))
         return locations, labels
 
-    locations, labels=get_sticks(x_axis)
-    plt.xticks(locations, labels)
-    locations, labels=get_sticks(y_axis)
-    plt.yticks(locations, labels)
-    plt.xlabel('Epoch: {:3d}'.format(epoch))
+    # locations, labels=get_sticks(x_axis)
+    # plt.xticks(locations, labels)
+    plt.xticks([], [])
+    # locations, labels=get_sticks(y_axis)
+    # plt.yticks(locations, labels)
+    plt.yticks([], [])
+
+    # plt.xlabel('Epoch: {:3d}'.format(epoch))
+    plt.xlabel('')
 
     figure_name = '../plotting/{}/epoch_{}'.format(mode, epoch)
-    plt.savefig(figure_name, bbox_inches='tight')
+    plt.savefig(figure_name, bbox_inches='tight', dpi=300)
 
     return
 
