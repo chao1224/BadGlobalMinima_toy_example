@@ -80,9 +80,9 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
             if j < x[1]:
                 break
         if y == 0:
-            ax.add_patch(Circle((col_idx, row_idx), 3, fill=True, facecolor='b', edgecolor='w'))
+            ax.add_patch(Circle((col_idx, row_idx), 3, fill=True, facecolor='b', edgecolor='w', linewidth=0.3, alpha=0.8))
         else:
-            ax.add_patch(Circle((col_idx, row_idx), 3, fill=True, facecolor='r', edgecolor='w'))
+            ax.add_patch(Circle((col_idx, row_idx), 3, fill=True, facecolor='r', edgecolor='w', linewidth=0.3, alpha=0.8))
 
     im = ax.imshow(colors, cmap='coolwarm')
 
