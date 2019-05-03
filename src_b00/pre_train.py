@@ -19,9 +19,10 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 plt.switch_backend('agg')
 from PIL import Image
+from shutil import copyfile
 
 
-def train(model, X_train, Y_train, X_test, Y_test, criterion, interval=1):
+def train(model, X_train, Y_train, X_test, Y_test, criterion, interval=100):
     model.train()
 
     global_learning_rate = args.lr
@@ -73,6 +74,8 @@ def train(model, X_train, Y_train, X_test, Y_test, criterion, interval=1):
 
     plot_points(X_train, Y_train, epoch, mode)
     plot_decision_boundary(model, X_train, Y_train, epoch, mode)
+    figure_name = '../plotting/{}/epoch_{}.png'.format(mode, epoch)
+    copyfile(figure_name, '../plotting/b00_pre_train.png')
 
     return
 

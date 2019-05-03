@@ -43,7 +43,7 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
     fig, ax = plt.subplots()
     x_lower, x_upper = -1.5, 1.5
     y_lower, y_upper = -1, 2
-    interval = 0.01
+    interval = 0.03
     x_axis = np.arange(x_lower, x_upper+interval/10, interval)
     y_axis = np.arange(y_lower, y_upper+interval/10, interval)[::-1]
     N = len(x_axis)
@@ -108,7 +108,9 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
     plt.xlabel('')
 
     figure_name = '../plotting/{}/epoch_{}'.format(mode, epoch)
-    plt.savefig(figure_name, bbox_inches='tight', dpi=300)
+    plt.savefig(figure_name, bbox_inches='tight', dpi=600)
+    plt.clf()
+    plt.close()
 
     return
 
@@ -146,5 +148,6 @@ def plot_loss(model, X, Y, criterion, epoch, mode):
 
     plt.savefig('../plotting/{}/loss_epoch_{}'.format(mode, epoch), bbox_inches='tight')
     plt.clf()
+    plt.close()
 
     return
