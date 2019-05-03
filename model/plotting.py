@@ -43,7 +43,7 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
     fig, ax = plt.subplots()
     x_lower, x_upper = -1.5, 1.5
     y_lower, y_upper = -1, 2
-    interval = 0.03
+    interval = 0.01
     x_axis = np.arange(x_lower, x_upper+interval/10, interval)
     y_axis = np.arange(y_lower, y_upper+interval/10, interval)[::-1]
     N = len(x_axis)
