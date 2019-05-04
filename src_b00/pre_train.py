@@ -66,8 +66,8 @@ def train(model, X_train, Y_train, X_test, Y_test, criterion, interval=100):
         should_stop = test(model, X_train, Y_train, criterion)
         print()
 
-        if e % interval == 0:
-            plot_decision_boundary(model, X_train, Y_train, e, mode)
+        # if e % interval == 0:
+        #     plot_decision_boundary(model, X_train, Y_train, e, mode)
 
         if should_stop:
             break

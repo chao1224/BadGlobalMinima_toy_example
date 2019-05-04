@@ -43,7 +43,7 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
     fig, ax = plt.subplots()
     x_lower, x_upper = -1.5, 1.5
     y_lower, y_upper = -1, 2
-    interval = 0.01
+    interval = 0.005
     x_axis = np.arange(x_lower, x_upper+interval/10, interval)
     y_axis = np.arange(y_lower, y_upper+interval/10, interval)[::-1]
     N = len(x_axis)
@@ -80,9 +80,9 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
             if j < x[1]:
                 break
         if y == 0:
-            ax.add_patch(Circle((col_idx, row_idx), 3, fill=True, facecolor='b', edgecolor='w', linewidth=0.3, alpha=0.8))
+            ax.add_patch(Circle((col_idx, row_idx), 3, fill=True, facecolor='b', edgecolor='w', linewidth=0.8, alpha=0.8))
         else:
-            ax.add_patch(Circle((col_idx, row_idx), 3, fill=True, facecolor='r', edgecolor='w', linewidth=0.3, alpha=0.8))
+            ax.add_patch(Circle((col_idx, row_idx), 3, fill=True, facecolor='r', edgecolor='w', linewidth=0.8, alpha=0.8))
 
     im = ax.imshow(colors, cmap='coolwarm')
 
@@ -108,7 +108,7 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
     plt.xlabel('')
 
     figure_name = '../plotting/{}/epoch_{}'.format(mode, epoch)
-    plt.savefig(figure_name, bbox_inches='tight', dpi=600)
+    plt.savefig(figure_name, bbox_inches='tight', dpi=500)
     plt.clf()
     plt.close()
 
