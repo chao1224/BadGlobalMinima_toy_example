@@ -9,7 +9,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 plt.switch_backend('agg')
-from PIL import Image
 
 
 def plot_points(X, Y, epoch, mode):
@@ -41,8 +40,8 @@ def plot_points(X, Y, epoch, mode):
 
 def plot_decision_boundary(model, X_, Y_, epoch, mode):
     fig, ax = plt.subplots()
-    x_lower, x_upper = -1.5, 1.5
-    y_lower, y_upper = -1, 2
+    x_lower, x_upper = -1.1, 1.5
+    y_lower, y_upper = -1.1, 1.5
     interval = 0.005
     x_axis = np.arange(x_lower, x_upper+interval/10, interval)
     y_axis = np.arange(y_lower, y_upper+interval/10, interval)[::-1]
@@ -80,9 +79,9 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
             if j < x[1]:
                 break
         if y == 0:
-            ax.add_patch(Circle((col_idx, row_idx), 3, fill=True, facecolor='b', edgecolor='w', linewidth=0.8, alpha=0.8))
+            ax.add_patch(Circle((col_idx, row_idx), 4, fill=True, facecolor='b', edgecolor='w', linewidth=0.8, alpha=0.8))
         else:
-            ax.add_patch(Circle((col_idx, row_idx), 3, fill=True, facecolor='r', edgecolor='w', linewidth=0.8, alpha=0.8))
+            ax.add_patch(Circle((col_idx, row_idx), 4, fill=True, facecolor='r', edgecolor='w', linewidth=0.8, alpha=0.8))
 
     im = ax.imshow(colors, cmap='coolwarm')
 

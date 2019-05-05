@@ -18,7 +18,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 plt.switch_backend('agg')
-from PIL import Image
 from shutil import copyfile
 
 
@@ -113,11 +112,15 @@ if __name__ == '__main__':
     parser.set_defaults(DA_for_train=False)
     parser.add_argument('--momentum', default=0, type=float)
     parser.add_argument('--weight-decay', default=0, type=float)
+    parser.add_argument('--seed', type=int, default=137)
 
     plt.figure(figsize=(8, 4))
     args = parser.parse_args()
     mode = args.mode
     epoch = args.epoch
+
+    torch.manual_seed(args.seed)
+    np.random.seed(args.seed)
 
     data = np.load('../datasets/confusion_data.npz')
     train_data, train_label = data['train_data'], data['train_label']

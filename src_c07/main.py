@@ -18,7 +18,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 plt.switch_backend('agg')
-from PIL import Image
 from shutil import copyfile
 
 
@@ -93,6 +92,7 @@ if __name__ == '__main__':
     parser.add_argument('--epoch', type=int, default=1000)
     parser.add_argument('--lr', type=float, default=0.01)
     parser.add_argument('--gamma', type=float, default=0)
+    parser.add_argument('--seed', type=int, default=137)
 
     parser.set_defaults(DA_for_train=True)
     parser.add_argument('--momentum', default=0.9, type=float)
@@ -102,6 +102,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     mode = args.mode
     epoch = args.epoch
+
+    torch.manual_seed(args.seed)
+    np.random.seed(args.seed)
 
     data = np.load('../datasets/actual_data.npz')
     train_data, train_label = data['train_data'], data['train_label']
