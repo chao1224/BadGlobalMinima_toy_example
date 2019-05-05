@@ -40,19 +40,19 @@ def plot_points(X, Y, epoch, mode):
 
 def plot_decision_boundary(model, X_, Y_, epoch, mode):
     fig, ax = plt.subplots()
-    x_lower, x_upper = -1.1, 1.5
-    y_lower, y_upper = -1.1, 1.5
-    interval = 0.005
+    x_lower, x_upper = -1.25, 1.8
+    y_lower, y_upper = -0.75, 1.25
+    interval = 0.001
     x_axis = np.arange(x_lower, x_upper+interval/10, interval)
     y_axis = np.arange(y_lower, y_upper+interval/10, interval)[::-1]
     N = len(x_axis)
-    assert x_upper - x_lower == y_upper - y_lower
-    X = np.zeros((N*N, 2))
+    M = len(y_axis)
+    X = np.zeros((N*M, 2))
 
     def axis2index(col_idx, row_idx):
-        return col_idx * N + row_idx
+        return row_idx * N + col_idx
 
-    for row_idx, j in enumerate(y_axis):
+    for row_idx,j in enumerate(y_axis):
         for col_idx,i in enumerate(x_axis):
             idx = axis2index(col_idx, row_idx)
             X[idx][0] = i
@@ -63,7 +63,7 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
     output = model(input)
     y_pred = output.detach().numpy()
 
-    colors = np.zeros((N, N))
+    colors = np.zeros((M, N))
     for row_idx,j in enumerate(y_axis):
         for col_idx,i in enumerate(x_axis):
             idx = axis2index(col_idx, row_idx)
@@ -79,9 +79,9 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
             if j < x[1]:
                 break
         if y == 0:
-            ax.add_patch(Circle((col_idx, row_idx), 4, fill=True, facecolor='b', edgecolor='w', linewidth=0.8, alpha=0.8))
+            ax.add_patch(Circle((col_idx, row_idx), 30, fill=True, facecolor='b', edgecolor='w', linewidth=0.8, alpha=0.8))
         else:
-            ax.add_patch(Circle((col_idx, row_idx), 4, fill=True, facecolor='r', edgecolor='w', linewidth=0.8, alpha=0.8))
+            ax.add_patch(Circle((col_idx, row_idx), 30, fill=True, facecolor='r', edgecolor='w', linewidth=0.8, alpha=0.8))
 
     im = ax.imshow(colors, cmap='coolwarm')
 
