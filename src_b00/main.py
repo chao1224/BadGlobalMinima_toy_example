@@ -118,6 +118,9 @@ if __name__ == '__main__':
     criterion = nn.BCELoss(reduce=False)
     train(model, train_data, train_label, test_data, test_label, criterion)
 
+    with open('main_model.pt', 'wb') as f_:
+        torch.save(model.state_dict(), f_)
+
     f = open('../output/{}/model_weight.out'.format(mode), 'w')
     f.write(model.__str__())
     f.write('\n')
