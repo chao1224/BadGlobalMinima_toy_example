@@ -26,36 +26,39 @@ def train(model, X_train, Y_train, X_test, Y_test, criterion, interval=10):
     global_learning_rate = args.lr
     optimizer = optim.SGD(model.parameters(), lr=global_learning_rate,
                           momentum=args.momentum, weight_decay=args.weight_decay)
-    train_dataset = torch.utils.data.TensorDataset(torch.FloatTensor(X_train), torch.FloatTensor(Y_train))
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=0)
 
     plot_decision_boundary(model, X_train, Y_train, 0, mode)
 
     for e in range(1, 1+epoch):
-        print('epoch: {}'.format(e))
         model.train()
+        model.zero_grad()
+        input, target = Variable(torch.FloatTensor(X_train)), Variable(torch.FloatTensor(Y_train))
 
-        for batch_idx, (data, target) in enumerate(train_loader):
-            # data, target = data.cuda(), target.cuda()
-            data, target = Variable(data), Variable(target)
-            optimizer.zero_grad()
-            output = model(data)
-            loss = criterion(output, target)
-            loss = loss.sum()
-            loss.backward()
-            optimizer.step()
+        output = model(input)
+        loss = criterion(output, target)
+        loss = loss.sum()
+        loss.backward()
+        optimizer.step()
 
-        test(model, X_train, Y_train, criterion)
+        y_true, y_pred = target.detach().numpy(), output.detach().numpy()
+        roc_auc = roc_auc_score(y_true=y_true, y_score=y_pred)
+        acc = accuracy_score(y_true, y_pred>0.5)
+        print('epoch: {}\nloss: {}\tacc: {}\t\tAUC[ROC]: {}'.format(e, loss.data.cpu(), acc, roc_auc))
+
+        should_stop = test(model, X_train, Y_train, criterion)
         test(model, X_test, Y_test, criterion)
         print()
 
         # if e % interval == 0:
         #     plot_decision_boundary(model, X_train, Y_train, e, mode)
 
+        # if should_stop:
+        #     return
+
     plot_points(X_train, Y_train, epoch, mode)
     plot_decision_boundary(model, X_train, Y_train, epoch, mode)
     figure_name = '../plotting/{}/epoch_{}.png'.format(mode, epoch)
-    copyfile(figure_name, '../plotting/a00.png')
+    copyfile(figure_name, '../plotting/c07_fine_tuning.png')
 
     return
 
@@ -85,16 +88,15 @@ def test(model, X, Y, criterion, final_output=False):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mode', type=str, default='a00')
-    parser.add_argument('--epoch', type=int, default=50)
+    parser.add_argument('--mode', type=str, default='c07_fine_tuning')
+    parser.add_argument('--epoch', type=int, default=1000)
     parser.add_argument('--lr', type=float, default=0.01)
-    parser.add_argument('--batch-size', type=int, default=100)
     parser.add_argument('--gamma', type=float, default=0)
     parser.add_argument('--seed', type=int, default=137)
 
-    parser.set_defaults(DA_for_train=False)
-    parser.add_argument('--momentum', default=0, type=float)
-    parser.add_argument('--weight-decay', default=0, type=float)
+    parser.set_defaults(DA_for_train=True)
+    parser.add_argument('--momentum', default=0.9, type=float)
+    parser.add_argument('--weight-decay', default=0.1, type=float)
 
     plt.figure(figsize=(8, 4))
     args = parser.parse_args()
@@ -110,27 +112,9 @@ if __name__ == '__main__':
         train_data, train_label = apply_DA(train_data, train_label)
     test_data, test_label = data['test_data'], data['test_label']
 
-    print('Cross Entropy Loss:')
     model = NeuralNet(D=2)
-    criterion = nn.BCELoss(reduce=False)
-    train(model, train_data, train_label, test_data, test_label, criterion)
+    model.load_state_dict(torch.load('main_model.pt'))
 
-    with open('main_model.pt', 'wb') as f_:
-        torch.save(model.state_dict(), f_)
-
-    f = open('../output/{}/model_weight.out'.format(mode), 'w')
-    f.write(model.__str__())
-    f.write('\n')
-    f.write('\n')
-    paramdict = {}
-    for name, param in model.named_parameters():
-        if param.requires_grad:
-            param = param.data.cpu().numpy()
-            paramdict[name] = param
-            f.write('layer name: {}\tshape: {}'.format(name, param.shape))
-            f.write('\n')
-            for x in param:
-                f.write('{}'.format(x))
-                f.write('\n')
-            f.write('\n')
-    np.savez('../output/{}/model_weight'.format(mode), **paramdict)
+    plot_decision_boundary(model, train_data, train_label, epoch, mode)
+    figure_name = '../plotting/{}/epoch_{}.png'.format(mode, epoch)
+    copyfile(figure_name, '../plotting/c07_fine_tuning.png')

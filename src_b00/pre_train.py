@@ -28,26 +28,29 @@ def train(model, X_train, Y_train, X_test, Y_test, criterion, interval=100):
     gamma = args.gamma
     optimizer = optim.SGD(model.parameters(), lr=global_learning_rate,
                           momentum=args.momentum, weight_decay=args.weight_decay)
+    train_dataset = torch.utils.data.TensorDataset(torch.FloatTensor(X_train), torch.FloatTensor(Y_train))
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=0)
     count, count_patience = 0, 10000
 
-    best_acc = test(model, X_train, Y_train, criterion)
+    _, best_acc = test(model, X_train, Y_train, criterion)
     plot_decision_boundary(model, X_train, Y_train, 0, mode)
 
     for e in range(1, 1+epoch):
+        print('epoch: {}'.format(e))
         model.train()
-        model.zero_grad()
-        input, target = Variable(torch.FloatTensor(X_train)), Variable(torch.FloatTensor(Y_train))
 
-        output = model(input)
-        loss = criterion(output, target)
-        loss = loss.sum()
-        loss.backward()
-        optimizer.step()
+        for batch_idx, (data, target) in enumerate(train_loader):
+            # data, target = data.cuda(), target.cuda()
+            data, target = Variable(data), Variable(target)
+            optimizer.zero_grad()
+            output = model(data)
+            loss = criterion(output, target)
+            loss = loss.sum()
+            loss.backward()
+            optimizer.step()
 
-        y_true, y_pred = target.detach().numpy(), output.detach().numpy()
-        roc_auc = roc_auc_score(y_true=y_true, y_score=y_pred)
-        acc = accuracy_score(y_true, y_pred>0.5)
-        print('epoch: {}\nloss: {}\tacc: {}\t\tAUC[ROC]: {}'.format(e, loss.data.cpu(), acc, roc_auc))
+        should_stop, acc = test(model, X_train, Y_train, criterion)
+        print()
 
         if acc > best_acc:
             best_acc = acc
@@ -55,21 +58,18 @@ def train(model, X_train, Y_train, X_test, Y_test, criterion, interval=100):
         else:
             count += 1
             if count >= count_patience:
-                print('Changing learning rate, from\t', global_learning_rate),
+                print('Changing learning rate, from\t', global_learning_rate, end='\t')
                 global_learning_rate *= gamma
                 print('to\t', global_learning_rate)
                 for param_group in optimizer.param_groups:
                     param_group['lr'] = global_learning_rate
                 count = 0
 
-        should_stop = test(model, X_train, Y_train, criterion)
-        print()
-
         # if e % interval == 0:
         #     plot_decision_boundary(model, X_train, Y_train, e, mode)
 
-        if should_stop:
-            break
+        # if should_stop:
+        #     break
 
     plot_points(X_train, Y_train, epoch, mode)
     plot_decision_boundary(model, X_train, Y_train, epoch, mode)
@@ -99,7 +99,7 @@ def test(model, X, Y, criterion, final_output=False):
                 max_neg = max(max_neg, value)
         print('min positive is: {} and max negative is: {}\n'.format(min_pos, max_neg))
 
-    return acc == 1.0
+    return acc == 1.0, acc
 
 
 if __name__ == '__main__':
@@ -107,6 +107,7 @@ if __name__ == '__main__':
     parser.add_argument('--mode', type=str, default='b00_pre_train')
     parser.add_argument('--epoch', type=int, default=100000)
     parser.add_argument('--lr', type=float, default=0.003)
+    parser.add_argument('--batch-size', type=int, default=100)
     parser.add_argument('--gamma', type=float, default=0.3)
 
     parser.set_defaults(DA_for_train=False)
