@@ -9,4 +9,4 @@ cp pre_train_model.pt ../output/b00_pre_train
 mkdir -p ../output/b00_fine_tuning
 mkdir -p ../plotting/b00_fine_tuning
 rm ../plotting/b00_fine_tuning/*
-python main.py --epoch=10000 --lr=0.01 --batch-size=10 > ../output/b00_fine_tuning/main.out
+python main.py --epoch=10000 --lr=0.003 --batch-size=10 > ../output/b00_fine_tuning/main.out
