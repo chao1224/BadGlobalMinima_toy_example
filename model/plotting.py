@@ -71,6 +71,7 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
         for col_idx,i in enumerate(x_axis):
             idx = axis2index(col_idx, row_idx)
             colors[row_idx][col_idx] = y_pred[idx]
+    colors = colors.T
 
     for x,y in zip(X_, Y_):
         col_idx = 0
@@ -82,11 +83,9 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
             if j < x[1]:
                 break
         if y == 0:
-            ax.add_patch(Circle((col_idx, row_idx), 40, fill=True, facecolor='b', edgecolor='deepskyblue', linewidth=3, alpha=0.8))
+            ax.add_patch(Circle((row_idx, col_idx), 40, fill=True, facecolor='b', edgecolor='deepskyblue', linewidth=3, alpha=0.8))
         else:
-            ax.add_patch(Circle((col_idx, row_idx), 40, fill=True, facecolor='r', edgecolor='lightcoral', linewidth=3, alpha=0.8))
-
-    # im = ax.imshow(colors, cmap='coolwarm')
+            ax.add_patch(Circle((row_idx, col_idx), 40, fill=True, facecolor='r', edgecolor='lightcoral', linewidth=3, alpha=0.8))
 
     # # lightskyblue 135,206,250 ==> (0.529, 0.824, 1)
     # # white 255, 255, 255 ==> (1, 1, 1)
@@ -108,6 +107,7 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
 
     cmap1 = LinearSegmentedColormap('my_colormap', cdict, N=256, gamma=0.75)
     im = ax.imshow(colors, interpolation='nearest', origin='lower', cmap=cmap1)
+    # im = ax.imshow(colors, cmap='coolwarm')
 
     fig.tight_layout()
 
