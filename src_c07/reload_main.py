@@ -57,8 +57,8 @@ def train(model, X_train, Y_train, X_test, Y_test, criterion, interval=10):
 
     plot_points(X_train, Y_train, epoch, mode)
     plot_decision_boundary(model, X_train, Y_train, epoch, mode)
-    figure_name = '../plotting/{}/epoch_{}.png'.format(mode, epoch)
-    copyfile(figure_name, '../plotting/c07_fine_tuning.png')
+    figure_name = '../plotting/{}/epoch_{}.pdf'.format(mode, epoch)
+    copyfile(figure_name, '../plotting/c07_fine_tuning.pdf')
 
     return
 
@@ -116,5 +116,5 @@ if __name__ == '__main__':
     model.load_state_dict(torch.load('main_model.pt'))
 
     plot_decision_boundary(model, train_data, train_label, epoch, mode)
-    figure_name = '../plotting/{}/epoch_{}.png'.format(mode, epoch)
-    copyfile(figure_name, '../plotting/c07_fine_tuning.png')
+    figure_name = '../plotting/{}/epoch_{}.pdf'.format(mode, epoch)
+    copyfile(figure_name, '../plotting/c07_fine_tuning.pdf')

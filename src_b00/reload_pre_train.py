@@ -51,5 +51,5 @@ if __name__ == '__main__':
     model.load_state_dict(torch.load('pre_train_model.pt'))
 
     plot_decision_boundary(model, train_data, train_label, epoch, mode)
-    figure_name = '../plotting/{}/epoch_{}.png'.format(mode, epoch)
-    copyfile(figure_name, '../plotting/b00_pre_train.png')
+    figure_name = '../plotting/{}/epoch_{}.pdf'.format(mode, epoch)
+    copyfile(figure_name, '../plotting/b00_pre_train.pdf')

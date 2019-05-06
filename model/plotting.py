@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 plt.switch_backend('agg')
 from matplotlib.colors import LinearSegmentedColormap
+from scipy import ndimage
 
 
 def plot_points(X, Y, epoch, mode):
@@ -41,6 +42,7 @@ def plot_points(X, Y, epoch, mode):
 
 def plot_decision_boundary(model, X_, Y_, epoch, mode):
     fig, ax = plt.subplots()
+
     x_lower, x_upper = -1.25, 1.8
     y_lower, y_upper = -0.75, 1.25
     interval = 0.001
@@ -92,7 +94,6 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
     # colors = ['lightskyblue', 'white', 'lightpink']
     # colors = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
 
-    import matplotlib.colors as col
     cdict = {'red': ((0., 0.529, 0.529),
                      (0.5, 1.0, 1.0),
                      (1.0, 1.0, 1.0)),
@@ -129,7 +130,7 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
     # plt.xlabel('Epoch: {:3d}'.format(epoch))
     plt.xlabel('')
 
-    figure_name = '../plotting/{}/epoch_{}'.format(mode, epoch)
+    figure_name = '../plotting/{}/epoch_{}.pdf'.format(mode, epoch)
     plt.savefig(figure_name, bbox_inches='tight', dpi=500)
     plt.clf()
     plt.close()

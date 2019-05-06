@@ -56,8 +56,8 @@ def train(model, X_train, Y_train, X_test, Y_test, criterion, interval=10):
 
     plot_points(X_train, Y_train, epoch, mode)
     plot_decision_boundary(model, X_train, Y_train, epoch, mode)
-    figure_name = '../plotting/{}/epoch_{}.png'.format(mode, epoch)
-    copyfile(figure_name, '../plotting/a00.png')
+    figure_name = '../plotting/{}/epoch_{}.pdf'.format(mode, epoch)
+    copyfile(figure_name, '../plotting/a00.pdf')
 
     return
 
