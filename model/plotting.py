@@ -9,6 +9,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 plt.switch_backend('agg')
+from matplotlib.colors import LinearSegmentedColormap
 
 
 def plot_points(X, Y, epoch, mode):
@@ -83,9 +84,29 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
         else:
             ax.add_patch(Circle((col_idx, row_idx), 40, fill=True, facecolor='r', edgecolor='lightcoral', linewidth=3, alpha=0.8))
 
-    # lightskye blue, lightpink
+    # im = ax.imshow(colors, cmap='coolwarm')
 
-    im = ax.imshow(colors, cmap='coolwarm')
+    # # lightskyblue 135,206,250 ==> (0.529, 0.824, 1)
+    # # white 255, 255, 255 ==> (1, 1, 1)
+    # # lightpink 255,182,193 ==> (1, 0.728, 0.772)
+    # colors = ['lightskyblue', 'white', 'lightpink']
+    # colors = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
+
+    import matplotlib.colors as col
+    cdict = {'red': ((0., 0.529, 0.529),
+                     (0.5, 1.0, 1.0),
+                     (1.0, 1.0, 1.0)),
+
+             'green': ((0., 0.824, 0.824),
+                       (0.5, 1.0, 1.0),
+                       (1., 0.728, 0.728)),
+
+             'blue': ((0., 1., 1.),
+                       (0.5, 1., 1.),
+                       (1., 0.772, 0.772))}
+
+    cmap1 = LinearSegmentedColormap('my_colormap', cdict, N=256, gamma=0.75)
+    im = ax.imshow(colors, interpolation='nearest', origin='lower', cmap=cmap1)
 
     fig.tight_layout()
 
