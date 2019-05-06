@@ -6,8 +6,13 @@ mu, sigma = 2, 1.5
 
 
 def generate_actual_data(N):
+<<<<<<< HEAD
     X_neg_shift = np.array([[-0.65, 0]] * N)
     X_pos_shift = np.array([[0.65, 0]] * N)
+=======
+    X_neg_shift = np.array([[-0.5, 0]] * N)
+    X_pos_shift = np.array([[0.5, 0]] * N)
+>>>>>>> 8a2b54969e9b05df78a2934689a04796c9ec0318
     X_pos = np.random.normal(mu, sigma, (N, 2)) * 0.1 + X_pos_shift
     X_neg = np.random.normal(mu, sigma, (N, 2)) * 0.1 + X_neg_shift
 
@@ -35,7 +40,7 @@ def load_data(file_path):
 
 
 if __name__ == '__main__':
-    N = 50
+    N = 25
 
     actual_train_data, actual_train_label = generate_actual_data(N)
     actual_test_data, actual_test_label = generate_actual_data(N)
