@@ -2,12 +2,12 @@ from __future__ import print_function
 
 import numpy as np
 
-mu, sigma = 2, 1
+mu, sigma = 2, 1.5
 
 
 def generate_actual_data(N):
-    X_neg_shift = np.array([[-1, 0]] * N)
-    X_pos_shift = np.array([[1, 0]] * N)
+    X_neg_shift = np.array([[-0.65, 0]] * N)
+    X_pos_shift = np.array([[0.65, 0]] * N)
     X_pos = np.random.normal(mu, sigma, (N, 2)) * 0.1 + X_pos_shift
     X_neg = np.random.normal(mu, sigma, (N, 2)) * 0.1 + X_neg_shift
 

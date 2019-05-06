@@ -79,9 +79,9 @@ def plot_decision_boundary(model, X_, Y_, epoch, mode):
             if j < x[1]:
                 break
         if y == 0:
-            ax.add_patch(Circle((col_idx, row_idx), 30, fill=True, facecolor='b', edgecolor='w', linewidth=1.5, alpha=0.8))
+            ax.add_patch(Circle((col_idx, row_idx), 40, fill=True, facecolor='b', edgecolor='deepskyblue', linewidth=2, alpha=0.8))
         else:
-            ax.add_patch(Circle((col_idx, row_idx), 30, fill=True, facecolor='r', edgecolor='w', linewidth=1.5, alpha=0.8))
+            ax.add_patch(Circle((col_idx, row_idx), 40, fill=True, facecolor='r', edgecolor='lightcoral', linewidth=2, alpha=0.8))
 
     im = ax.imshow(colors, cmap='coolwarm')
 
